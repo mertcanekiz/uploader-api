@@ -80,6 +80,15 @@ namespace Uploader.Infrastructure.Repositories
             return await cursor.FirstOrDefaultAsync(cancellationToken: cancellationToken);
         }
 
+        public async Task<bool> UpdateImageDescriptionAsync(Guid id, string description, CancellationToken cancellationToken = default)
+        {
+            var filter = Builders<Image>.Filter.Where(x => x.Id.Equals(id));
+            var update = Builders<Image>.Update.Set(x => x.UpdatedAt, DateTime.Now);
+            update = update.Set(x => x.Description, description);
+            var result = await _collection.UpdateOneAsync(filter, update, cancellationToken: cancellationToken);
+            return result.IsAcknowledged && result.ModifiedCount == 1;
+        }
+
         public async Task<bool> DeleteImageAsync(Guid id, CancellationToken cancellationToken = default)
         {
             var result = await _collection.DeleteOneAsync(x => x.Id.Equals(id), cancellationToken: cancellationToken);
