@@ -39,7 +39,7 @@ namespace Uploader.Infrastructure.Repositories
             return await _collection.AsQueryable().ToListAsync(cancellationToken: cancellationToken);
         }
 
-        public async Task<(long count, IReadOnlyList<Image> data)> GetImagesPaginatedAsync(int pageNumber, int pageSize,
+        public async Task<(long count, IReadOnlyList<Image> data)> GetImagesPaginatedAsync(int pageNumber, int pageSize, bool showDeleted,
             CancellationToken cancellationToken = default)
         {
             var countFacet = AggregateFacet.Create("count",
@@ -55,7 +55,7 @@ namespace Uploader.Infrastructure.Repositories
                     PipelineStageDefinitionBuilder.Limit<Image>(pageSize)
                 }));
 
-            var filter = Builders<Image>.Filter.Empty;
+            var filter = Builders<Image>.Filter.Where(x => showDeleted || x.DeletedAt == null);
             var aggregation = await _collection.Aggregate()
                 .Match(filter)
                 .Facet(countFacet, dataFacet)
@@ -85,6 +85,15 @@ namespace Uploader.Infrastructure.Repositories
             var filter = Builders<Image>.Filter.Where(x => x.Id.Equals(id));
             var update = Builders<Image>.Update.Set(x => x.UpdatedAt, DateTime.Now);
             update = update.Set(x => x.Description, description);
+            var result = await _collection.UpdateOneAsync(filter, update, cancellationToken: cancellationToken);
+            return result.IsAcknowledged && result.ModifiedCount == 1;
+        }
+
+        public async Task<bool> SoftDeleteImageAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            var filter = Builders<Image>.Filter.Where(x => x.Id.Equals(id));
+            var update = Builders<Image>.Update.Set(x => x.UpdatedAt, DateTime.Now);
+            update = update.Set(x => x.DeletedAt, DateTime.Now);
             var result = await _collection.UpdateOneAsync(filter, update, cancellationToken: cancellationToken);
             return result.IsAcknowledged && result.ModifiedCount == 1;
         }

@@ -10,6 +10,7 @@ namespace Uploader.Application.Images.Queries.GetImagesWithPagination
 {
     public class GetImagesWithPaginationQuery : IRequest<PaginatedList<Image>>
     {
+        public bool ShowDeleted { get; set; } = false;
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
     }
@@ -25,7 +26,7 @@ namespace Uploader.Application.Images.Queries.GetImagesWithPagination
 
         public async Task<PaginatedList<Image>> Handle(GetImagesWithPaginationQuery request, CancellationToken cancellationToken)
         {
-            var (count, images) = await _imageRepository.GetImagesPaginatedAsync(request.PageNumber, request.PageSize,
+            var (count, images) = await _imageRepository.GetImagesPaginatedAsync(request.PageNumber, request.PageSize, request.ShowDeleted,
                 cancellationToken: cancellationToken);
             return new PaginatedList<Image>(images.ToList(), count, request.PageNumber, request.PageSize);
         }
