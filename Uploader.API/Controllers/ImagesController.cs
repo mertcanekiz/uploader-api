@@ -7,6 +7,7 @@ using Uploader.Application.Images.Commands.CreateImage;
 using Uploader.Application.Images.Commands.DeleteImage;
 using Uploader.Application.Images.Commands.SoftDeleteImage;
 using Uploader.Application.Images.Commands.UpdateImageDescription;
+using Uploader.Application.Images.Queries.GetImageById;
 using Uploader.Application.Images.Queries.GetImagesWithPagination;
 using Uploader.Domain.Entities;
 
@@ -32,6 +33,18 @@ namespace Uploader.API.Controllers
         public async Task<ActionResult<PaginatedList<Image>>> GetImages([FromQuery] GetImagesWithPaginationQuery query)
         {
             var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Get a single image by id
+        /// </summary>
+        /// <param name="id">The id of the image to retrieve</param>
+        /// <returns>A single image by id</returns>
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetImageById([FromRoute] Guid id)
+        {
+            var result = await _mediator.Send(new GetImageByIdQuery {Id = id});
             return Ok(result);
         }
 
