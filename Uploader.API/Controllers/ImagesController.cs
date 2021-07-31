@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Uploader.Application.Common.Models;
 using Uploader.Application.Images.Commands.CreateImage;
@@ -14,7 +13,6 @@ using Uploader.Domain.Entities;
 
 namespace Uploader.API.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ImagesController : ControllerBase

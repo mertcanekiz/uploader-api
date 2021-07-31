@@ -2,14 +2,12 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Uploader.Application.Common.Attributes;
 using Uploader.Application.Common.Exceptions;
 using Uploader.Application.Images.Repositories;
 using Uploader.Domain.Entities;
 
 namespace Uploader.Application.Images.Commands.DeleteImage
 {
-    [Authorize(Roles = "Administrator")]
     public class DeleteImageCommand : IRequest
     {
         public Guid Id { get; set; }

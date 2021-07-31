@@ -9,11 +9,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="AspNetCore.Identity.Mongo" Version="8.2.0" />
       <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.1" />
       <PackageReference Include="AWSSDK.S3" Version="3.7.1.18" />
-      <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="5.0.8" />
-      <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="6.0.0-preview.6.21355.2" />
       <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0-preview.6.21352.12" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0-preview.6.21352.12" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0-preview.6.21352.12" />
