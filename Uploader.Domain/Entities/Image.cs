@@ -1,14 +1,12 @@
 ﻿using System;
+using Uploader.Domain.Common;
 
 namespace Uploader.Domain.Entities
 {
-    public class Image
+    public class Image : TimestampedEntity
     {
         public Guid Id { get; set; }
         public string Url { get; set; }
         public string Description { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
-        public DateTime? DeletedAt { get; set; }
     }
 }
